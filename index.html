@@ -3,22 +3,17 @@
 <head>
     <title>Mi página en GitHub Pages</title>
     <script>
-        // Obtener la IP pública de forma sincrónica e incrustarla directamente en el HTML
+        // Mostrar un parámetro GET en la página
         (function() {
-            const request = new XMLHttpRequest();
-            request.open('GET', 'https://api.ipify.org?format=json', false); // false para ejecución sincrónica
-            request.send(null);
+            const params = new URLSearchParams(window.location.search);
+            const customParam = params.get('param');
 
-            let ipText = 'No se pudo obtener la IP';
-            if (request.status === 200) {
-                const data = JSON.parse(request.responseText);
-                ipText = data.ip;
+            // Incrustar el parámetro en el HTML si existe
+            if (customParam) {
+                document.write(
+                    `<p>El valor del parámetro "param" es: <span id="custom-param">${customParam}</span></p>`
+                );
             }
-
-            // Incrustar directamente en el HTML antes de que cargue completamente
-            document.write(
-                `<p>Tu dirección IP pública es: <span id="public-ip">${ipText}</span></p>`
-            );
         })();
     </script>
 </head>
