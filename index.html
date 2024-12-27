@@ -3,31 +3,27 @@
 <head>
     <title>Mi página en GitHub Pages</title>
     <script>
-        // Obtener la IP pública de forma sincrónica
-        function fetchPublicIPSync() {
+        // Obtener la IP pública de forma sincrónica e incrustarla directamente en el HTML
+        (function() {
             const request = new XMLHttpRequest();
             request.open('GET', 'https://api.ipify.org?format=json', false); // false para ejecución sincrónica
             request.send(null);
 
+            let ipText = 'No se pudo obtener la IP';
             if (request.status === 200) {
                 const data = JSON.parse(request.responseText);
-                return data.ip;
-            } else {
-                console.error('Error al obtener la IP de forma sincrónica:', request.statusText);
-                return 'No se pudo obtener la IP';
+                ipText = data.ip;
             }
-        }
 
-        // Establecer la IP pública antes de cargar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            const ip = fetchPublicIPSync();
-            document.getElementById('public-ip').textContent = ip;
-        });
+            // Incrustar directamente en el HTML antes de que cargue completamente
+            document.write(
+                `<p>Tu dirección IP pública es: <span id="public-ip">${ipText}</span></p>`
+            );
+        })();
     </script>
 </head>
 <body>
     <h1>¡Bienvenido a mi página!</h1>
     <p>Este es un sitio publicado con GitHub Pages.</p>
-    <p>Tu dirección IP pública es: <span id="public-ip">Cargando...</span></p>
 </body>
 </html>
