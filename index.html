@@ -2,9 +2,29 @@
 <html>
 <head>
     <title>Mi página en GitHub Pages</title>
+    <script>
+        // Función para obtener la IP pública
+        async function fetchPublicIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) {
+                    throw new Error('Error al obtener la IP');
+                }
+                const data = await response.json();
+                document.getElementById('public-ip').textContent = data.ip;
+            } catch (error) {
+                document.getElementById('public-ip').textContent = 'No se pudo obtener la IP';
+                console.error('Error:', error);
+            }
+        }
+
+        // Llamar a la función cuando se cargue la página
+        window.onload = fetchPublicIP;
+    </script>
 </head>
 <body>
     <h1>¡Bienvenido a mi página!</h1>
     <p>Este es un sitio publicado con GitHub Pages.</p>
+    <p>Tu dirección IP pública es: <span id="public-ip">Cargando...</span></p>
 </body>
 </html>
