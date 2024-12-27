@@ -3,23 +3,26 @@
 <head>
     <title>Mi página en GitHub Pages</title>
     <script>
-        // Función para obtener la IP pública
-        async function fetchPublicIP() {
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                if (!response.ok) {
-                    throw new Error('Error al obtener la IP');
-                }
-                const data = await response.json();
-                document.getElementById('public-ip').textContent = data.ip;
-            } catch (error) {
-                document.getElementById('public-ip').textContent = 'No se pudo obtener la IP';
-                console.error('Error:', error);
+        // Obtener la IP pública de forma sincrónica
+        function fetchPublicIPSync() {
+            const request = new XMLHttpRequest();
+            request.open('GET', 'https://api.ipify.org?format=json', false); // false para ejecución sincrónica
+            request.send(null);
+
+            if (request.status === 200) {
+                const data = JSON.parse(request.responseText);
+                return data.ip;
+            } else {
+                console.error('Error al obtener la IP de forma sincrónica:', request.statusText);
+                return 'No se pudo obtener la IP';
             }
         }
 
-        // Llamar a la función cuando se cargue la página
-        window.onload = fetchPublicIP;
+        // Establecer la IP pública antes de cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const ip = fetchPublicIPSync();
+            document.getElementById('public-ip').textContent = ip;
+        });
     </script>
 </head>
 <body>
